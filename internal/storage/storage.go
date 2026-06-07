@@ -9,16 +9,12 @@ import (
 )
 
 func Load() ([]model.Snippet, error) {
-	home, err := os.UserHomeDir()
-
+	path, err := buildFilePath()
 	if err != nil {
 		return nil, err
 	}
-	
-	path := filepath.Join(home, ".quippet", "snippets.json")
 
 	data, err := os.ReadFile(path)
-
 	if err != nil {
 		if os.IsNotExist(err) {
 			return []model.Snippet{}, nil
@@ -36,5 +32,36 @@ func Load() ([]model.Snippet, error) {
 }
 
 func Save(snippets []model.Snippet) error {
+	path, err := buildFilePath()
+	if err != nil {
+		return err
+	}
+
+	data, err := json.Marshal(snippets)
+	if err != nil {
+		return err
+	}
+
+	dir := filepath.Dir(path)
+	err = os.MkdirAll(dir, 0755)
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(path, data, 0644)
+	if err != nil {
+		return err
+	}
+
 	return nil
+}
+
+func buildFilePath() (string, error) {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+	path := filepath.Join(home, ".quippet", "snippets.json")
+
+	return path, nil
 }
