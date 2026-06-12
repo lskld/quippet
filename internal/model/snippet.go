@@ -3,7 +3,7 @@ package model
 import "time"
 
 type Snippet struct {
-	Id      string
+	ID      string
 	Title   string
 	Tags    []string
 	Content string
