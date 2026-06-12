@@ -14,7 +14,26 @@ import (
 )
 
 func main() {
-	fmt.Println("qpt starting")
+	if len(os.Args) < 2 {
+		fmt.Println("usage: qpt [add|list]")
+		return
+	}
+
+	switch os.Args[1] {
+	case "add":
+		err := addSnippet()
+		if err != nil {
+			fmt.Println("error: ", err)
+		}
+	case "list":
+		err := listSnippets()
+		if err != nil {
+			fmt.Println("error: ", err)
+		}
+	default:
+		fmt.Println("unknown command:", os.Args[1])
+	}
+	
 }
 
 func addSnippet() error {
@@ -29,7 +48,7 @@ func addSnippet() error {
 	}
 	title = strings.TrimSpace(title)
 
-	fmt.Print("Choose tags, seperate by comma (eg. banana, apple, pear)")
+	fmt.Print("Choose tags, seperate by comma (eg. banana, apple, pear): ")
 	tagInput, err := reader.ReadString('\n')
 	if err != nil {
 		return err
