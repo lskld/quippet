@@ -11,6 +11,7 @@ import (
 
 	"github.com/lskld/quippet/internal/model"
 	"github.com/lskld/quippet/internal/storage"
+	"github.com/lskld/quippet/internal/ui"
 )
 
 func main() {
@@ -96,8 +97,9 @@ func listSnippets() error {
 		return err
 	}
 
-	for _, value := range snippets {
-		fmt.Printf("%s | %s | %v\n", value.ID, value.Title, value.Tags)
+	err = ui.Run(snippets)
+	if err != nil {
+		fmt.Println("error: ", err)
 	}
 
 	return nil
