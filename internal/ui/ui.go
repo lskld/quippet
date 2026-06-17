@@ -27,10 +27,15 @@ func (m listModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m listModel) View() string {
 	var sb strings.Builder
 
+	sb.WriteString("Quippet\n\n")
+
 	for _, snippet := range m.snippets {
 		sb.WriteString(snippet.Title)
 		sb.WriteByte('\n')
 	}
+
+	sb.WriteString("\npress q to quit")
+
 	return sb.String()
 }
 
